@@ -1,0 +1,8 @@
+<div class="wrapper">
+  <h4>Greeted People</h4>
+   {{#each greetedNames}}
+      <a href="/greeted/{{@key}}"><p>{{@key}}</p></a>
+   {{/each}}
+
+    <h4>{{message}}</h4>
+</div>

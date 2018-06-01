@@ -1,0 +1,29 @@
+<div class="wrapper">
+
+<div class="">
+
+  <h4>Greetings</h4><hr/><br><br>
+
+    <form action="/greetings"  method="POST">
+
+        <label>Name:  <input class="nameField" type="string" name="name"></label><br><br><br>
+        <input type="radio" name="language" value="english"> English<br>
+        <input type="radio" name="language" value="afrikaans"> Afrikaans<br>
+        <input type="radio" name="language" value="isixhosa"> IsiXhosa <br><br>
+        <p>Counter: {{counter}}</p><br>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect greetButton" type="submit" style="background-color:#1AB365; color:white">
+            Greet
+        </button>
+
+
+    </form>
+
+    <h4>{{greetingMessage}}</h4>
+
+</div>
+<div class="greetedBtn">
+  <a href="/greeted"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect greetedButton" type="submit" style="background-color:#1AB365; color:white">
+      Greeted People
+  </button></a>
+</div>
+</div>
