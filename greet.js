@@ -1,18 +1,18 @@
-module.exports = function(peopleGreeted){
+module.exports = function(pool){
    //var noOfGreetings = peopleGreeted? Object.keys(peopleGreeted).length : 0;
    //var namesGreeted = peopleGreeted || {} ;
-   var noOfGreetings = 0;
-   var namesGreeted = {};
 
-  function greet(language, name){
+  async function greet(language, name){
 
     if (language !== undefined && name !== "") {
 
-      if(namesGreeted[name] === undefined){
-        noOfGreetings++;
-        namesGreeted[name]= 1;
-      }else{
-        namesGreeted[name] += 1;
+      var queryName = await pool.query('select * from users where name = $1', [name]);
+
+      if(queryName.rowCount === 0){
+        await pool.query('INSERT into users (name, greet_counter) values($1, $2)', [name, 1]);
+
+      } else {
+        await pool.query("UPDATE users set greet_counter= greet_counter+1 WHERE name = $1", [name])
       }
 
       if(language == "english"){
@@ -26,18 +26,27 @@ module.exports = function(peopleGreeted){
 
   }
 
-  function checkGreetings(){
-    return noOfGreetings;
+  async function checkGreetings(){
+   let results = await pool.query('SELECT * FROM users');
+   //console.log(results.rowCount);
+   return results.rowCount;
   }
 
-  function checkGreetedNames(){
-    return namesGreeted;
+  async function checkGreetedNames(){
+    return await pool.query('SELECT * FROM users');
+
+  }
+
+  async function getGreetsForUser(name){
+    let greets = await pool.query('select greet_counter from users where name = $1', [name]);
+    return greets.rows[0].greet_counter;
   }
 
   return {
     greetNeighbour : greet,
     checkGreets : checkGreetings,
-    getGreetedNames : checkGreetedNames
+    getGreetedNames : checkGreetedNames,
+    getGreetsForUser
   }
 
 }
