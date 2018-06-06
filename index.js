@@ -33,6 +33,14 @@ app.get('/', async function(req, res){
 
 });
 
+app.get('/reset', async function(req, res){
+
+  await greet.reset();
+  let counter = await greet.checkGreets();
+  res.render("greetings", {counter});
+
+});
+
 
 app.get('/greetings/:user/:language', async function(req, res){
 

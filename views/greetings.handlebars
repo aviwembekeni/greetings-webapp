@@ -10,20 +10,34 @@
         <input type="radio" name="language" value="english"> English<br>
         <input type="radio" name="language" value="afrikaans"> Afrikaans<br>
         <input type="radio" name="language" value="isixhosa"> IsiXhosa <br><br>
-        <p>Counter: {{counter}}</p><br>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect greetButton" type="submit" style="background-color:#1AB365; color:white">
-            Greet
-        </button>
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--6-col">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect greetButton" type="submit" style="background-color:#1AB365; color:white">
+                Greet
+            </button>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <p>Counter: {{counter}}</p>
+          </div>
 
+        </div>
 
     </form>
 
     <h4>{{greetingMessage}}</h4>
 
 </div>
-<div class="greetedBtn">
-  <a href="/greeted"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect greetedButton" type="submit" style="background-color:#1AB365; color:white">
-      Greeted People
-  </button></a>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--6-col">
+    <a href="/greeted"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect greetedButton" type="submit" style="background-color:#1AB365; color:white">
+        Greeted People
+    </button></a>
+  </div>
+  <div class="mdl-cell mdl-cell--6-col">
+    <a href="/reset"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      Reset
+    </button></a>
+  </div>
+
 </div>
 </div>

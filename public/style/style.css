@@ -19,3 +19,7 @@ h4{
 p{
   text-align: center;
 }
+
+.mdl-button{
+  width: 50%;
+}

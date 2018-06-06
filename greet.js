@@ -42,11 +42,17 @@ module.exports = function(pool){
     return greets.rows[0].greet_counter;
   }
 
+  async function reset(){
+    return await pool.query('DELETE FROM users;');
+
+  }
+
   return {
     greetNeighbour : greet,
     checkGreets : checkGreetings,
     getGreetedNames : checkGreetedNames,
-    getGreetsForUser
+    getGreetsForUser,
+    reset
   }
 
 }
