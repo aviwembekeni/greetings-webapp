@@ -3,10 +3,18 @@ const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 const Greet = require("./greet");
 const pg = require('pg');
-const Pool = pg.Pool;
+const Pool = pg.Pool; 
+
+let useSSL = false;
+if(process.env.DATABASE_URL){
+  useSSL = true;
+}
+
+const connectionString = process.env.DATABASE_URL || 'postgresql://lavish:lavish@localhost:5432/greets'
 
 const pool = new Pool({
-  connectionString: 'postgresql://lavish:lavish@localhost:5432/greets'
+  connectionString,
+  ssl: useSSL
 });
 
 const greet = Greet(pool);
