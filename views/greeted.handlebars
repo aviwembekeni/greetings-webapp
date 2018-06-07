@@ -1,8 +1,23 @@
 <div class="wrapper">
-  <h4>Greeted People</h4>
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+      <a href="/"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect homeBtn" type="submit" style="background-color:#1AB365; color:white; width: 100%">
+          Home Page
+      </button></a>
+    </div>
+  </div>
+
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+      <h2 class="greeted-people">Greeted People</h2>
+    </div>
+  </div>
+
    {{#each greetedNames}}
       <a href="/greeted/{{name}}"><p>{{name}}</p></a>
    {{/each}}
 
     <h4>{{message}}</h4>
 </div>
+
+
