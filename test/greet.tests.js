@@ -1,54 +1,94 @@
+"use strict"
 let assert = require("assert");
 var Greet = require("../greet");
 
+const pg = require('pg');
+const Pool = pg.Pool;
+
+const pool = new Pool({
+  connectionString: 'postgresql://lavish:lavish@localhost:5432/greets'
+})
+
 describe('greet', function() {
 
-    it('should return the greeting in English', function() {
-      var greet = Greet();
+  beforeEach(async function() {
+     await pool.query('DELETE FROM users;');
+  })
 
-      assert.deepEqual("Hello, Jon", greet.greetNeighbour("english", "Jon"));
+    it('should return the greeting in English', async function() {
+      var greet = Greet(pool);
+
+      assert.deepEqual("Hello, Jon", await greet.greetNeighbour("english", "Jon"));
     });
 
-    it('should return the greeting in Afrikaans', function() {
-      var greet = Greet();
+    it('should return the greeting in Afrikaans', async function() {
+      var greet = Greet(pool);
 
-      assert.deepEqual("Hallo, Jon", greet.greetNeighbour("afrikaans", "Jon"));
+      assert.deepEqual("Hallo, Jon", await greet.greetNeighbour("afrikaans", "Jon"));
     });
 
-    it('should return the greeting in IsiXhosa', function() {
-      var greet = Greet();
+    it('should return the greeting in IsiXhosa', async function() {
+      var greet = Greet(pool);
 
-      assert.deepEqual("Molo, Jon", greet.greetNeighbour("isixhosa", "Jon"));
+      assert.deepEqual("Molo, Jon", await greet.greetNeighbour("isixhosa", "Jon"));
     });
 
-    it('should return the counter value of people counted', function() {
-      var greet = Greet();
+    it('should return the counter value of people counted', async function() {
+      var greet = Greet(pool);
 
-      greet.greetNeighbour("English", "Jon")
-      greet.greetNeighbour("Afrikaans", "Aviwe")
-      greet.greetNeighbour("isixhosa", "Doe")
+      await greet.greetNeighbour("English", "Jon")
+      await greet.greetNeighbour("Afrikaans", "Aviwe")
+      await greet.greetNeighbour("isixhosa", "Doe")
 
-      assert.deepEqual(3, greet.checkGreets());
+      assert.deepEqual(3, await greet.checkGreets());
     });
 
-    it('should return number of different names greeted', function() {
-      var greet = Greet();
+    it('should return number of different names greeted', async function() {
+      var greet = Greet(pool);
 
-      greet.greetNeighbour("English", "Jon")
-      greet.greetNeighbour("isixhosa", "Aviwe")
-      greet.greetNeighbour("isixhosa", "Jon")
+      await greet.greetNeighbour("English", "Jon")
+      await greet.greetNeighbour("isixhosa", "Aviwe")
+      await greet.greetNeighbour("isixhosa", "Jon")
 
-      assert.deepEqual(2, greet.checkGreets());
+      assert.deepEqual(2, await greet.checkGreets());
     });
 
-    it('should return object of different names greeted with number of greets per each person', function() {
-      var greet = Greet();
+    it('should return object of different names greeted with number of greets per each person', async function() {
+      var greet = Greet(pool);
 
-      greet.greetNeighbour("English", "Jon")
-      greet.greetNeighbour("isixhosa", "Aviwe")
-      greet.greetNeighbour("isixhosa", "Jon")
+      await greet.greetNeighbour("English", "Jon")
+      await greet.greetNeighbour("isixhosa", "Aviwe")
+      await greet.greetNeighbour("isixhosa", "Jon")
 
-      assert.deepEqual({Jon: 2, Aviwe: 1}, greet.getGreetedNames());
+
+      assert.deepEqual([ { name: 'Aviwe' }, { name: 'Jon' } ], await greet.getGreetedNames());
     });
 
+    it('should return number of greetings for a user', async function() {
+      var greet = Greet(pool);
+
+      await greet.greetNeighbour("English", "Jon")
+      await greet.greetNeighbour("isixhosa", "Aviwe")
+      await greet.greetNeighbour("isixhosa", "Jon")
+
+
+      assert.deepEqual(2, await greet.getGreetsForUser("Jon"));
+    });
+
+    it('should return empty users data', async function() {
+      var greet = Greet(pool);
+
+      await greet.greetNeighbour("English", "Jon")
+      await greet.greetNeighbour("isixhosa", "Aviwe")
+      await greet.greetNeighbour("isixhosa", "Jon")
+
+
+      assert.deepEqual([], await greet.reset());
+    });
+
+    after(async function() {
+      await pool.end();
+    })
 });
+
+

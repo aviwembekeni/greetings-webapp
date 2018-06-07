@@ -6,7 +6,7 @@ const pg = require('pg');
 const Pool = pg.Pool;
 
 const pool = new Pool({
-  connectionString: 'postgresql://aviwe:lavish@localhost:5432/greets'
+  connectionString: 'postgresql://lavish:lavish@localhost:5432/greets'
 });
 
 const greet = Greet(pool);
@@ -84,14 +84,17 @@ app.get('/greeted/:name', async function(req, res){
 
   let name = req.params.name;
 
-  let results = await greet.getGreetedNames();
-  let greetedNames = results.rows;
+  let greetedNames = await greet.getGreetedNames();
   let counter = await greet.getGreetsForUser(name);
   let message = `Hello, ${name} has been greeted ${counter} time(s).`;
 
   res.render("greeted", {greetedNames, message});
 
 });
+
+process.on('uncaughtException', function (err) {
+  console.log(err);
+}); 
 
 app.listen(PORT, function(){
   console.log('App starting on port', PORT)

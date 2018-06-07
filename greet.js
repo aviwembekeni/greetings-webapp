@@ -1,6 +1,4 @@
 module.exports = function(pool){
-   //var noOfGreetings = peopleGreeted? Object.keys(peopleGreeted).length : 0;
-   //var namesGreeted = peopleGreeted || {} ;
 
   async function greet(language, name){
 
@@ -33,7 +31,8 @@ module.exports = function(pool){
   }
 
   async function checkGreetedNames(){
-    return await pool.query('SELECT * FROM users');
+    let results = await pool.query('SELECT name FROM users');
+    return results.rows;
 
   }
 
@@ -43,7 +42,8 @@ module.exports = function(pool){
   }
 
   async function reset(){
-    return await pool.query('DELETE FROM users;');
+    let results =  await pool.query('DELETE FROM users;');
+    return results.rows;
 
   }
 
